@@ -1,0 +1,104 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{siunitx}
+\usepackage{tabularx}
+\geometry{
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\title{Random Ants \\
+  \large on PuzzledQuant}
+\author{Daniel Smit}
+\date{March 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem}
+
+\href{https://www.puzzledquant.com/problems/clhudg9eo000mmm08opjz067x}{\underline{Link to problem}}
+
+\subsection{Description}
+500 ants are placed on a 1-foot string without any order. Assume independent uniform distribution for each ant. Each ant will move randomly towards either end of the string at a constant speed of 1 foot per minute. The ants will keep moving until they reach the end of the string, and if two ants collide head-on, they will both immediately turn around and continue moving. Assuming that the size of the ants is infinitely small, what is the expected time for all 500 ants to fall off the string?
+
+\section{Notes}
+
+\begin{itemize}
+  \item Let's say one end of the string is position 0, and the other end is position 1.
+  \item If there was a single ant in a random position on the 1-foot string, the average position would be 0.5, and hence the time to reach the end and fall off would be $\dfrac{0.5 ft}{1 ft/min} = 0.5 min$ since the expected value of a uniform distribution over [0,1] is $\frac{1}{2}$.
+  \item If two ants are on the string, they can either move toward each other, move away from each other, or one could initially follow the other. If they collide, they will turn around, but since their movement is indistinguishable from simply passing through each other, we can ignore the effects of collisions.
+  \item We can assume they are all moving in the same direction (to the left), which means the distance each ant needs to travel is the same as their position.
+  \item We use the Cumulative Distribution Function (CDF), which gives the probability that a randomly placed ant is at or before position \texttt{x} on the string.
+  \item Then we can determine the Probability Density Function (PDF) of a continuous random variable by differentiating the CDF.
+  \item Once we obtain the Probability Density Function (PDF) by differentiating the CDF, we can compute the Expected Value, which gives the average distance an ant needs to travel before falling off. Dividing this distance by the ant's speed gives us the Expected Time before the last ant falls off.
+\end{itemize}
+
+\newpage
+
+\section{Background Knowledge}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{center}
+\begin{tabularx}{1\textwidth} { 
+  | >{\raggedright\arraybackslash}X 
+  | >{\centering\arraybackslash}X 
+  | >{\raggedleft\arraybackslash}X | }
+ \hline
+ Cumulative Distribution Function (CDF) of \texttt{\( Z_n \)} & \( F(x) = P(Z_n \leq x) = P(X_1 \leq x, X_2 \leq x, ..., X_n \leq x)\) \\
+ \hline
+ Probability Density Function (PDF) & \( f(x) = \dfrac{dF(x)}{dx} \) \\
+ \hline
+ Expected Value (discrete) - weighted average & \( E[X] = x_1p_1 + x_2p_2 + ... \) \\
+ \hline
+ Expected Value (continuous) & \( E[X] = \int_{-\infty}^{\infty} xf(x) \,dx\) \\
+ \hline
+ Standard Differentiation & \( \frac{d}{dx} x^n = nx^{n-1} \) \\
+ \hline
+ Standard Integration & \( \int x^n \,dx = \frac{x^{n+1}}{n+1} + C \) \\
+ \hline
+\end{tabularx}
+\end{center}
+
+\section{Solution}
+
+The ants are uniformly distributed. Representing the position of an ant as \texttt{X}, We can deduce the following:
+
+\[ F(x) = P(X \leq 0) = 0 \]
+\[ F(x) = P(X \leq 0.5) = 0.5 \]
+\[ F(x) = P(X \leq 1) = 1 \]
+
+To generalise,
+\[ F(x) = P(X \leq x) = x \]
+
+When using the CDF for multiple uniformly distributed values, we multiply the probabilities together:
+\[ F(x) = P(Z_n \leq x) = x \cdot x \cdot ... \cdot x = x^n \]
+
+Determine the PDF:
+\[ f(x) = \dfrac{dF(x)}{dx} = \dfrac{dx^n}{dx} = nx^{n-1} \]
+
+Determine the expected value:
+\begin{align*}
+  E[Z_n] &= \int_{0}^{1} xf(x) \,dx \\
+  &= \int_{0}^{1} xnx^{n-1} \\
+  &= \int_{0}^{1} nx^n \\
+  &= n\int_{0}^{1} x^n \\
+  &= n \cdot \frac{x^{n+1}}{n+1}\biggr\rvert_0^1 \\
+  &= n \cdot \frac{1}{n+1} \\
+  &= \frac{n}{n+1}
+\end{align*}
+
+For \( n = 500 \), we get the answer:
+\[ E[Z_{500}] = \frac{500}{501} \]
+
+Therefore, the expeccted position and hence the expected distance the ants need to travel is \( \frac{500}{501} \).
+
+The ants travel at \texttt{1 ft/min} and hence this takes \( \frac{500}{501} ft \cdot 1 ft/min \)
+\[ = \frac{500}{501} min \]
+
+\end{document}
